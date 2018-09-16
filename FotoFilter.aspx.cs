@@ -91,7 +91,67 @@ public partial class FotoFilter : System.Web.UI.Page
         }
         return s;
     }
+    public void dordeBol()
+    {
+        int newWidth;
+        int newHeight;
+        newWidth = (sourceImage.Width / 2) - 2;
+        newHeight = (sourceImage.Height / 2) - 2;
 
+        resultImage = new Bitmap(SourceImage);
+
+
+
+        Color c;
+        for (int i = 0; i < newWidth; i++)
+        {
+            for (int j = 0; j < newHeight; j++)
+            {
+                c = resultImage.GetPixel(i, j);
+
+
+                // resultImage.SetPixel(i, j, Color.FromArgb(c.R + c.G + c.B));
+
+
+
+
+                if (i == 0)
+                {
+                    sourceImage.SetPixel(i, j, Color.FromArgb(c.R + c.G + c.B));
+                    sourceImage.SetPixel(i, j + 1, Color.FromArgb(c.R + c.G + c.B));
+                    sourceImage.SetPixel(i + 1, j, Color.FromArgb(c.R + c.G + c.B));
+                    sourceImage.SetPixel(i + 1, j + 1, Color.FromArgb(c.R + c.G + c.B));
+                }
+                else
+                {
+
+                    sourceImage.SetPixel(i + 1, j + 1, Color.FromArgb(c.R + c.G + c.B));
+                    sourceImage.SetPixel(i + 2, j + 2, Color.FromArgb(c.R + c.G + c.B));
+
+
+                }
+            }
+        }
+
+
+        //Rectangle rectangle = new Rectangle(0, 0, newWidth, newHeight);
+
+        //// look at every pixel in the blur rectangle
+        //for (Int32 xx = rectangle.X; xx < rectangle.X + rectangle.Width; xx++)
+        //{
+        //    for (Int32 yy = rectangle.Y; yy < rectangle.Y + rectangle.Height; yy++)
+        //    {
+        //        rectangle.
+        //        sourceImage.SetPixel(x, y, Color.FromArgb(avgR, avgG, avgB));
+
+        //    }
+        //}
+
+
+
+
+
+    }
     public Color MaksimumRenk(Color c)
     {
         Color R = Color.FromArgb(0, 0, 0);
