@@ -91,67 +91,55 @@ public partial class FotoFilter : System.Web.UI.Page
         }
         return s;
     }
+   
+   
     public void dordeBol()
     {
+        string hash = DateTime.Now.Ticks.ToString().Substring(5);
         int newWidth;
         int newHeight;
-        newWidth = (sourceImage.Width / 2) - 2;
-        newHeight = (sourceImage.Height / 2) - 2;
+        newWidth = (sourceImage.Width / 2);
+        newHeight = (sourceImage.Height / 2);
 
-        resultImage = new Bitmap(SourceImage);
+
+
+        resultImage = new Bitmap(newWidth, newHeight, PixelFormat.Format24bppRgb);
 
 
 
         Color c;
-        for (int i = 0; i < newWidth; i++)
+        for (int i = 0; i < newWidth - 1; i++)
         {
-            for (int j = 0; j < newHeight; j++)
+            for (int j = 0; j < newHeight - 1; j++)
             {
-                c = resultImage.GetPixel(i, j);
-
-
-                // resultImage.SetPixel(i, j, Color.FromArgb(c.R + c.G + c.B));
-
-
-
-
-                if (i == 0)
-                {
-                    sourceImage.SetPixel(i, j, Color.FromArgb(c.R + c.G + c.B));
-                    sourceImage.SetPixel(i, j + 1, Color.FromArgb(c.R + c.G + c.B));
-                    sourceImage.SetPixel(i + 1, j, Color.FromArgb(c.R + c.G + c.B));
-                    sourceImage.SetPixel(i + 1, j + 1, Color.FromArgb(c.R + c.G + c.B));
-                }
-                else
-                {
-
-                    sourceImage.SetPixel(i + 1, j + 1, Color.FromArgb(c.R + c.G + c.B));
-                    sourceImage.SetPixel(i + 2, j + 2, Color.FromArgb(c.R + c.G + c.B));
-
-
-                }
+                c = sourceImage.GetPixel(i, j);
+                resultImage.SetPixel(i, j, c);
             }
         }
+        resultImage.Save(@"C:\Users\alper\Pictures\alperweb\" + FOName + '_' + hash + ".jpg");
 
 
-        //Rectangle rectangle = new Rectangle(0, 0, newWidth, newHeight);
+        resultImage = new Bitmap(newWidth * 2, newHeight * 2, PixelFormat.Format24bppRgb);
 
-        //// look at every pixel in the blur rectangle
-        //for (Int32 xx = rectangle.X; xx < rectangle.X + rectangle.Width; xx++)
-        //{
-        //    for (Int32 yy = rectangle.Y; yy < rectangle.Y + rectangle.Height; yy++)
-        //    {
-        //        rectangle.
-        //        sourceImage.SetPixel(x, y, Color.FromArgb(avgR, avgG, avgB));
+        for (int i = 0; i < newWidth - 1; i++)
+        {
+            for (int j = 0; j < newHeight - 1; j++)
+            {
+                c = sourceImage.GetPixel(i, j);
+                //   resultImage.SetPixel(i, j, c);
+                //     resultImage.SetPixel((i * 2) + 1, (j * 2), c);
+                resultImage.SetPixel((i * 2), (j * 2), c);
+                resultImage.SetPixel((i * 2), (j * 2) + 1, c);
+                resultImage.SetPixel((i * 2) + 1, (j * 2), c);
+                resultImage.SetPixel((i * 2) + 1, (j * 2) + 1, c);
 
-        //    }
-        //}
-
-
-
-
+            }
+        }
+        resultImage.Save(@"C:\Users\alper\Pictures\alperweb\" + FOName + '_' + hash + "_2.jpg");
+         
 
     }
+    
     public Color MaksimumRenk(Color c)
     {
         Color R = Color.FromArgb(0, 0, 0);
