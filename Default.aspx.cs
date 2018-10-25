@@ -52,7 +52,7 @@ public partial class _Default : System.Web.UI.Page
         {
             System.Drawing.Image orjinalFoto = null;
             HttpPostedFile jpeg_image_upload = fu.PostedFile;
-            FOName = Path.GetFileName(fu.PostedFile.FileName);
+            FOName = Path.GetFileName(fu.PostedFile.FileName).Replace(".jpg","");
 
             orjinalFoto = System.Drawing.Image.FromStream(jpeg_image_upload.InputStream);
             sourceImage = new Bitmap(orjinalFoto);
@@ -60,32 +60,51 @@ public partial class _Default : System.Web.UI.Page
         }
     }
 
-    void islem() {
+    //string path = @"C:\Users\alper\OneDrive\Resimler\bear";
+    string path = @"C:\Users\alper\Pictures\bear";
+    string npath = @"C:\Users\alper\Pictures\bear\yeni\";
 
-        string path = @"C:\Users\alper\OneDrive\Resimler\bear";
+    void islem()
+    {
 
-       
+
+
         DirectoryInfo d = new DirectoryInfo(path);//Assuming Test is your Folder
-FileInfo[] Files = d.GetFiles("*.jpg"); //Getting Text files
-string str = "";
-foreach(FileInfo file in Files )
-{
-    string originalFileName = file.FullName;
-    string fileName = file.Name.Replace(" ", "-").Replace(",", "-");
-        string newFileName = Path.Combine(file.DirectoryName, "yeni\\"+fileName);
+        FileInfo[] Files = d.GetFiles("*.jpg"); //Getting Text files
+        string str = "";
+        foreach (FileInfo file in Files)
+        {
+            string originalFileName = file.FullName;
+            string fileName = file.Name.Replace(" ", "-").Replace(",", "-");
+            //  string newFileName = Path.Combine(npath,  fileName);
+            FOName = Path.GetFileName(originalFileName);
 
-        File.Move(originalFileName, newFileName);
-}
+            ResimOkuYol(originalFileName);
+            daralt();
+            //       File.Copy(originalFileName, newFileName);
+        }
 
-        //foreach (FileInfo file in Folder.GetFiles())
-        //{
-        //    string originalFileName = file.FullName;
-        //    string fileName = file.Name.Replace(" ", "-").Replace(",", "-");
-        //    string newFileName = Path.Combine(file.DirectoryName, fileName);
 
-        //    File.Move(originalFileName, newFileName);
-        //}
-    
+
+    }
+
+    public string ResimOkuYol(string YOL)
+    {
+        string s = "1";
+        try
+        {
+
+            System.Drawing.Image orjinalFoto = null;
+            //HttpPostedFile jpeg_image_upload = fu.PostedFile;
+            orjinalFoto = System.Drawing.Image.FromFile(YOL);
+            sourceImage = new Bitmap(orjinalFoto);
+            Yedek = new Bitmap(orjinalFoto); ;
+        }
+        catch (Exception t)
+        {
+            s = "0";
+        }
+        return s;
     }
 
     protected void Button1_Click(object sender, EventArgs e)
@@ -93,13 +112,49 @@ foreach(FileInfo file in Files )
         string hash = DateTime.Now.Ticks.ToString().Substring(5);
 
         islem();
-       // ResimOku(FileUpload1);
+        // ResimOku(FileUpload1);
         //ikiyeBol();
-      //  dordeBol();
+        //  dordeBol();
         //fSiyahOran(65); ResimKaydet("fSiyahOran65");
         //fSinCity2(200); ResimKaydet("fSinCity2_200");
+
     }
 
+    public void daralt()
+    {
+        string hash = DateTime.Now.Ticks.ToString().Substring(5);
+        int newWidth;
+        int newHeight;
+        Color c;
+        int wa = 200;
+        int ha = 0;
+
+        newWidth = (sourceImage.Width - wa);
+        newHeight = (sourceImage.Height - ha);
+
+        resultImage = new Bitmap(newWidth, newHeight, PixelFormat.Format24bppRgb);
+
+        for (int i = 0; i < newWidth; i++)
+        {
+            for (int j = 0; j < newHeight; j++)
+            {
+                c = sourceImage.GetPixel( i+wa,j+ha);
+                resultImage.SetPixel( i,j, c);
+
+
+                //iki katına büyültme
+                //resultImage.SetPixel((i * 2), (j * 2), c);
+                //resultImage.SetPixel((i * 2), (j * 2) + 1, c);
+                //resultImage.SetPixel((i * 2) + 1, (j * 2), c);
+                //resultImage.SetPixel((i * 2) + 1, (j * 2) + 1, c);
+            }
+        }
+
+        //  resultImage = fSetContrast(10, resultImage);
+
+
+        resultImage.Save(npath + FOName + '_' + hash + "_2.jpg");
+    }
     public void ikiyeBol()
     {
         string hash = DateTime.Now.Ticks.ToString().Substring(5);
@@ -128,7 +183,7 @@ foreach(FileInfo file in Files )
         //  resultImage = fSetContrast(10, resultImage);
 
 
-        resultImage.Save(@"C:\Users\alper\Pictures\alperweb\" + FOName + '_' + hash + "_2.jpg");
+        resultImage.Save(npath + FOName + '_' + hash + "_2.jpg");
 
 
         resultImage = new Bitmap(newWidth * 2, newHeight * 2, PixelFormat.Format24bppRgb);
@@ -148,7 +203,7 @@ foreach(FileInfo file in Files )
             }
         }
         //  resultImage = fSetContrast(0, resultImage);
-        resultImage.Save(@"C:\Users\alper\Pictures\alperweb\" + FOName + '_' + hash + "_1.jpg");
+        resultImage.Save(npath + FOName + '_' + hash + "_1.jpg");
 
 
     }
@@ -177,7 +232,7 @@ foreach(FileInfo file in Files )
 
             }
         }
-        resultImage.Save(@"C:\Users\alper\Pictures\alperweb\" + FOName + '_' + hash + "_1.jpg");
+        resultImage.Save(npath + FOName + '_' + hash + "_1.jpg");
 
         resultImage = new Bitmap(newWidth * 2, newHeight * 2, PixelFormat.Format24bppRgb);
 
@@ -195,7 +250,7 @@ foreach(FileInfo file in Files )
 
             }
         }
-        resultImage.Save(@"C:\Users\alper\Pictures\alperweb\" + FOName + '_' + hash + "_2.jpg");
+        resultImage.Save(npath + FOName + '_' + hash + "_2.jpg");
 
 
 
@@ -215,7 +270,7 @@ foreach(FileInfo file in Files )
 
             }
         }
-        resultImage.Save(@"C:\Users\alper\Pictures\alperweb\" + FOName + '_' + hash + "_3.jpg");
+        resultImage.Save(npath + FOName + '_' + hash + "_3.jpg");
         resultImage = new Bitmap(newWidth * 2, newHeight * 2, PixelFormat.Format24bppRgb);
 
         for (int i = 0; i < newWidth; i++)
@@ -232,7 +287,7 @@ foreach(FileInfo file in Files )
 
             }
         }
-        resultImage.Save(@"C:\Users\alper\Pictures\alperweb\" + FOName + '_' + hash + "_4.jpg");
+        resultImage.Save(npath + FOName + '_' + hash + "_4.jpg");
 
     }
 
