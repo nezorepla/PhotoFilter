@@ -211,6 +211,7 @@ public partial class _Default : System.Web.UI.Page
     }
     public void dordeBol()
     {
+        PointF firstLocation = new PointF(10f, 10f);
         string hash = DateTime.Now.Ticks.ToString().Substring(5);
         int newWidth;
         int newHeight;
@@ -234,6 +235,14 @@ public partial class _Default : System.Web.UI.Page
 
             }
         }
+        using (Graphics graphics = Graphics.FromImage(resultImage))
+        {
+            using (Font arialFont = new Font("Arial", 10))
+            {
+                graphics.DrawString(FOName + '_' + hash + "_1.jpg", arialFont, Brushes.Black, firstLocation);
+                //    graphics.DrawString(secondText, arialFont, Brushes.Red, secondLocation);
+            }
+        }
         resultImage.Save(npath + FOName + '_' + hash + "_1.jpg");
 
         resultImage = new Bitmap(newWidth * 2, newHeight * 2, PixelFormat.Format24bppRgb);
@@ -252,6 +261,15 @@ public partial class _Default : System.Web.UI.Page
 
             }
         }
+        using (Graphics graphics = Graphics.FromImage(resultImage))
+        {
+            using (Font arialFont = new Font("Arial", 10))
+            {
+                graphics.DrawString(FOName + '_' + hash + "_2.jpg", arialFont, Brushes.Black, firstLocation);
+                //    graphics.DrawString(secondText, arialFont, Brushes.Red, secondLocation);
+            }
+        }
+
         resultImage.Save(npath + FOName + '_' + hash + "_2.jpg");
 
 
@@ -272,6 +290,15 @@ public partial class _Default : System.Web.UI.Page
 
             }
         }
+        using (Graphics graphics = Graphics.FromImage(resultImage))
+        {
+            using (Font arialFont = new Font("Arial", 10))
+            {
+                graphics.DrawString(FOName + '_' + hash + "_3.jpg", arialFont, Brushes.Black, firstLocation);
+                //    graphics.DrawString(secondText, arialFont, Brushes.Red, secondLocation);
+            }
+        }
+
         resultImage.Save(npath + FOName + '_' + hash + "_3.jpg");
         resultImage = new Bitmap(newWidth * 2, newHeight * 2, PixelFormat.Format24bppRgb);
 
@@ -289,6 +316,15 @@ public partial class _Default : System.Web.UI.Page
 
             }
         }
+        using (Graphics graphics = Graphics.FromImage(resultImage))
+        {
+            using (Font arialFont = new Font("Arial", 10))
+            {
+                graphics.DrawString(FOName + '_' + hash + "_4.jpg", arialFont, Brushes.Black, firstLocation);
+                //    graphics.DrawString(secondText, arialFont, Brushes.Red, secondLocation);
+            }
+        }
+
         resultImage.Save(npath + FOName + '_' + hash + "_4.jpg");
 
     }
