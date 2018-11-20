@@ -1,8 +1,16 @@
 using System;
-using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Linq;
 using System.Web;
+using System.Web.Security;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using System.Xml.Linq;
+
+
 using System.IO;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -11,8 +19,11 @@ public partial class _Default : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        string hash = DateTime.Now.Ticks.ToString().Substring(5);
 
+        islem();
     }
+
     private Bitmap sourceImage;
     public Bitmap SourceImage
     {
@@ -52,7 +63,7 @@ public partial class _Default : System.Web.UI.Page
         {
             System.Drawing.Image orjinalFoto = null;
             HttpPostedFile jpeg_image_upload = fu.PostedFile;
-            FOName = Path.GetFileName(fu.PostedFile.FileName).Replace(".jpg","");
+            FOName = Path.GetFileName(fu.PostedFile.FileName).Replace(".jpg", "");
 
             orjinalFoto = System.Drawing.Image.FromStream(jpeg_image_upload.InputStream);
             sourceImage = new Bitmap(orjinalFoto);
@@ -61,8 +72,8 @@ public partial class _Default : System.Web.UI.Page
     }
 
     //string path = @"C:\Users\alper\OneDrive\Resimler\bear";
-    string path = @"C:\Users\alper\Pictures\bear";
-    string npath = @"C:\Users\alper\Pictures\bear\yeni\";
+    string path = @"C:\Users\A25318\Desktop\rhino head";
+    string npath = @"C:\Users\A25318\Desktop\rhino head\yeni\";
 
     void islem()
     {
@@ -80,7 +91,7 @@ public partial class _Default : System.Web.UI.Page
             FOName = Path.GetFileName(originalFileName);
 
             ResimOkuYol(originalFileName);
-            daralt();
+            dordeBol();
             //       File.Copy(originalFileName, newFileName);
         }
 
@@ -107,18 +118,7 @@ public partial class _Default : System.Web.UI.Page
         return s;
     }
 
-    protected void Button1_Click(object sender, EventArgs e)
-    {
-        string hash = DateTime.Now.Ticks.ToString().Substring(5);
 
-        islem();
-        // ResimOku(FileUpload1);
-        //ikiyeBol();
-        //  dordeBol();
-        //fSiyahOran(65); ResimKaydet("fSiyahOran65");
-        //fSinCity2(200); ResimKaydet("fSinCity2_200");
-
-    }
 
     public void daralt()
     {
@@ -126,11 +126,13 @@ public partial class _Default : System.Web.UI.Page
         int newWidth;
         int newHeight;
         Color c;
-        int wa = 200;
-        int ha = 0;
+        int w_sag = 20;
+        int w_sol = 200;
+        int h_ust = 20;
+        int h_alt = 50;
 
-        newWidth = (sourceImage.Width - wa);
-        newHeight = (sourceImage.Height - ha);
+        newWidth = (sourceImage.Width - (w_sag + w_sol));
+        newHeight = (sourceImage.Height - (h_ust + h_alt));
 
         resultImage = new Bitmap(newWidth, newHeight, PixelFormat.Format24bppRgb);
 
@@ -138,8 +140,8 @@ public partial class _Default : System.Web.UI.Page
         {
             for (int j = 0; j < newHeight; j++)
             {
-                c = sourceImage.GetPixel( i+wa,j+ha);
-                resultImage.SetPixel( i,j, c);
+                c = sourceImage.GetPixel(i + w_sag, j + h_ust);
+                resultImage.SetPixel(i, j, c);
 
 
                 //iki katına büyültme
@@ -215,7 +217,6 @@ public partial class _Default : System.Web.UI.Page
         Color c;
         newWidth = (sourceImage.Width / 2);
         newHeight = (sourceImage.Height / 2);
-        PointF firstLocation = new PointF(10f, 10f);
 
         resultImage = new Bitmap(newWidth * 2, newHeight * 2, PixelFormat.Format24bppRgb);
 
@@ -233,17 +234,6 @@ public partial class _Default : System.Web.UI.Page
 
             }
         }
- 
-        using (Graphics graphics = Graphics.FromImage(resultImage))
-        {
-            using (Font arialFont = new Font("Arial", 10))
-            {
-                graphics.DrawString(FOName + '_' + hash + "_1.jpg", arialFont, Brushes.Blue, firstLocation);
-            //    graphics.DrawString(secondText, arialFont, Brushes.Red, secondLocation);
-            }
-        }
-
-
         resultImage.Save(npath + FOName + '_' + hash + "_1.jpg");
 
         resultImage = new Bitmap(newWidth * 2, newHeight * 2, PixelFormat.Format24bppRgb);
@@ -262,14 +252,6 @@ public partial class _Default : System.Web.UI.Page
 
             }
         }
-        using (Graphics graphics = Graphics.FromImage(resultImage))
-        {
-            using (Font arialFont = new Font("Arial", 10))
-            {
-                graphics.DrawString(FOName + '_' + hash + "_2.jpg", arialFont, Brushes.Blue, firstLocation);
-                //    graphics.DrawString(secondText, arialFont, Brushes.Red, secondLocation);
-            }
-        } 
         resultImage.Save(npath + FOName + '_' + hash + "_2.jpg");
 
 
@@ -290,14 +272,6 @@ public partial class _Default : System.Web.UI.Page
 
             }
         }
-        using (Graphics graphics = Graphics.FromImage(resultImage))
-        {
-            using (Font arialFont = new Font("Arial", 10))
-            {
-                graphics.DrawString(FOName + '_' + hash + "_3.jpg", arialFont, Brushes.Blue, firstLocation);
-                //    graphics.DrawString(secondText, arialFont, Brushes.Red, secondLocation);
-            }
-        }
         resultImage.Save(npath + FOName + '_' + hash + "_3.jpg");
         resultImage = new Bitmap(newWidth * 2, newHeight * 2, PixelFormat.Format24bppRgb);
 
@@ -313,14 +287,6 @@ public partial class _Default : System.Web.UI.Page
                 resultImage.SetPixel((i * 2) + 1, (j * 2), c);
                 resultImage.SetPixel((i * 2) + 1, (j * 2) + 1, c);
 
-            }
-        }
-        using (Graphics graphics = Graphics.FromImage(resultImage))
-        {
-            using (Font arialFont = new Font("Arial", 10))
-            {
-                graphics.DrawString(FOName + '_' + hash + "_4.jpg", arialFont, Brushes.Blue, firstLocation);
-                //    graphics.DrawString(secondText, arialFont, Brushes.Red, secondLocation);
             }
         }
         resultImage.Save(npath + FOName + '_' + hash + "_4.jpg");
@@ -372,7 +338,4 @@ public partial class _Default : System.Web.UI.Page
         return imaj;
 
     }
-
-
-
 }
