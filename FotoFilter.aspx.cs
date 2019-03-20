@@ -237,16 +237,16 @@ public partial class FotoFilter : System.Web.UI.Page
     /// <returns>Mean value of color.</returns>
     public void ResimKaydet()
     {
-        SourceImage.Save(HttpContext.Current.Server.MapPath(@"\\fsprduom01\collection\ALPER\_EKS_Dosyalar\filter\" + DateTime.Now.Ticks.ToString().Substring(5) + ".jpg"));
+        SourceImage.Save(HttpContext.Current.Server.MapPath(@"\\xxxx\ALPER\_EKS_Dosyalar\filter\" + DateTime.Now.Ticks.ToString().Substring(5) + ".jpg"));
         SourceImage = new Bitmap(Yedek);
     }
     public void ResimKaydet(string name)
     {
-        //lu_duvar.SaveAs(@"\\fsprduom01\collection\ALPER\WebDocument\EKS_Dosyalar\" + ad);
+        //lu_duvar.SaveAs(@"\\xxx\ALPER\WebDocument\EKS_Dosyalar\" + ad);
         //strv = cs.bookekle(ad);,
 
-        //            SourceImage.Save(HttpContext.Current.Server.MapPath(@"\\fsprduom01\collection\ALPER\_EKS_Dosyalar\filter\" + name + ".jpg"));
-        SourceImage.Save(@"\\fsprduom01\collection\ALPER\_EKS_Dosyalar\filter\"+FOName +'_'+ name + ".jpg");
+        //            SourceImage.Save(HttpContext.Current.Server.MapPath(@"\\xxx\ALPER\_EKS_Dosyalar\filter\" + name + ".jpg"));
+        SourceImage.Save(@"\\xxx\ALPER\_EKS_Dosyalar\filter\"+FOName +'_'+ name + ".jpg");
         SourceImage = new Bitmap(Yedek);
     }
     public void Kucult(int boyut)
